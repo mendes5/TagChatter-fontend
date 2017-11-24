@@ -9,7 +9,7 @@ E é só isso... brincadeira né, você tambem tem que..., não é só isso mesm
 Caso não funcione pode ser que o servidor tenha fechado, então você pode clonar o repositorio, e se tiver Node.js hospedar um servidor http na pasta do repositorio clonado, e abrir na localhost:
 
 ```
-http-server -p58000 -o
+http-server -p8000 -o
 ```
 
 Caso não tenha o módulo pode encontrá-lo [neste link](https://www.npmjs.com/package/http-server). 
