@@ -20,5 +20,3 @@ Quando começei o projeto decidi não usar nenhuma biblioteca externa, usar apen
 O Html da página me impressionou com o seu minusculo tamanho, enquanto o CSS está monstruosamente grande (não sei se isso é normal ou aceitavel) e provavelmente deveria ser dividido em mais arquivos.
 
 Na parte de Javascript (que é minha especialidade) e tive o máximo de esforço para utilizar o paradigma da programação funcional e tentar deixar o máximo de funções privadas nos módulos para evitar problemas. No final tive pouca (quase zero, Users.js:14) poluição do objeto global, o que me agrada bastante pois da a sensação de o codigo ser mais encapsulado e menos propenso a erros.
-
-Só gostaria de agradecer pelo entreterimento, pela experiencia ganha, (pelos servidores de teste) e principalmente por me incentivarem a contruir algo legal. Espero que tenham tido sucesso com a ideia do `Hiring-Whitout-Whiteboards`.
