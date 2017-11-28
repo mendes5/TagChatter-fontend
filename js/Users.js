@@ -1,6 +1,6 @@
-//Este modulo apenas cuida de adicionar os usuarios
+//Este módulo apenas cuida de adicionar os usúarios
 //a lista conforme eles aparecem.
-//Alem de lidar com o `currentUser`
+//Além de lidar com o `currentUser`
 
 DOMRenderer.registerTemplate('userTemplate')
     `<div class="userItem">
@@ -13,8 +13,12 @@ DOMRenderer.registerTemplate('userTemplate')
 //Santa poluição do objeto `window`! Porêm este modulo ficou bem em um objeto.
 const userTemplate = DOMRenderer.getTemplate('userTemplate')
 
-//Lanca erros se nessesario
+//Lança erros se nessesario.
+//Como estes erros só são possiveis com
+//problemas no server e ele não expoe uma api para lidar
+//com isso não há muito o que se fazer além de logar no console.
 function validateUser(userData = {}) {
+    //BUG; deve se registar por id não por nome.
     if (Users.getUserByID(userData.id)) {
         console.log(`The user ${userData.name} was aleardy registered.`)
         return false
@@ -32,6 +36,7 @@ const Users = {
     me: {},
     userListRenderer: new DOMRenderer.FixedRendererTarget('.usersMenu'),
     currentUserIsRegistered: false,
+    //Registra um usuario com informações da REST API.
     registerUser(userData = {}) {
         if (!validateUser(userData)) {
             return
@@ -44,6 +49,7 @@ const Users = {
             LAST_ACTIVE: userData.lastActive,
         })
     },
+    //Registra o usuario atual com informações da REST API.
     registerCurrentUser(data) {
         const users = document.getElementsByClassName('currentUserPicturePlaceHolder')
         for (let i = 0; i < users.length; i++) {
@@ -53,12 +59,12 @@ const Users = {
         this.me = data
         Channels.drainQueue()   //Caso o usuario tenha de alguma forma conseguido escrever mesagens enquanto 
     },                          //ele não estava registrado, talvez o GET '/me' esteja demorando. 
+    //Retorna um usuario pelo seu id.
     getUserByID(id = "") {
         return this.users[id]
     },
+    //Registra uma lista de usuarios
     registerUserList(usersData = []) {
         usersData.map(d => this.registerUser(d))
     }
 }
-
-
