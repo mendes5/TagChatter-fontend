@@ -1,16 +1,14 @@
-//O objetivo deste modulo e substituir o Testing.js, para chamar as funcoes
-//dos modulos Channels.js, Users.js direto com informacoes da REST API.
+//O objetivo deste módulo é substituir o Testing.js, para chamar as funcoes
+//dos módulos Channels.js e Users.js direto com informacoes da REST API.
 
-//Primeiro precizamos de um meio para falar com o usuario.
+//Primeiro precizamos de um meio para falar com o usúario.
 const Msg = (e => {
 
-    //Coisas do tipo criar uma caixa de erro flutuante com
+    //COM; Coisas do tipo criar uma caixa de erro flutuante com
     //um botão parece bem simples, mas acaba pedindo mais 
-    //codigo do que se espera.
-
-    //Todo este codigo é só para uma função que abre uma caixa de
-    //dialogo com uma mensagem e retorna true ou false
-
+    //código do que se espera. Todo este codigo é só para
+    //uma função que abre uma caixa de
+    //diálogo com uma mensagem que retorna true ou false.
 
     const $otherError = DOMRenderer.getAbsoluteContainer()
     $otherError.appendToDocument()
@@ -28,10 +26,10 @@ const Msg = (e => {
         transform: translate(-50%, -800%);
         left: 50%;
         top: 50%;
-        z-index: 999999999999999999999999;
-        border-radius: 10px;
-        width: 500px;
-        background: #ffdbdb;
+        z-index: 999999999999999999999999;  /*O CSS deveria ter um sistema de camadas*/
+        border-radius: 10px;                /*para evitar estes 999999999, talvez o  */
+        width: 500px;                       /*cssLayers.js resolvesse isto.*/
+        background: #ffdbdb;                /*E comentários inline.*/
         box-shadow: 0px 9px 28px -9px black;
         transition: 600ms;
     }
@@ -67,10 +65,8 @@ const Msg = (e => {
         float: right;
     }
     `
-
-
-    //Que nem no React, todo o conteudo deve estar dentro de 
-    //um elemento
+    //Que nem no React, todo o conteúdo deve estar dentro de 
+    //um elemento.
     DOMRenderer.renderStringToElement(`
     <div>
         <center>
@@ -81,8 +77,7 @@ const Msg = (e => {
             <div id="errNo" class="errBtn">No</div>
         </center>
     </div>`, $messageQueryContainer)
-
-
+    
     async function showMessageFaliedError(msg, reazon) {
         $messageQueryContainer.addClass('active')
         N$('messageThatFalied').innerText = msg
@@ -98,9 +93,7 @@ const Msg = (e => {
             }
         })
     }
-
-
-
+    
     DOMRenderer.renderStringToElement(`
     <div>
         <center>
@@ -113,12 +106,10 @@ const Msg = (e => {
     async function showErrorMessage(msg, txtbtn1, txtbtn2) {
         $otherError.addClass('active')
         N$('errDesc2').innerText = msg
-
         const btn1 = N$('errYes2')
         btn1.innerText = txtbtn1
         const btn2 = N$('errNo2')
         btn2.innerText = txtbtn2
-
         return new Promise((res, rej) => {
             btn1.onclick = e => {
                 $otherError.removeClass('active')
@@ -130,9 +121,10 @@ const Msg = (e => {
             }
         })
     }
-
+    
+    //Também cria uma bolha para indicar se estamos online
+    //offline ou tentando conectar.
     const onlineIndicator = N$('onlineIndicator')
-
     const stayOnline = e => onlineIndicator.style.setProperty('background', '#0f0')
     const stayOffline = e => onlineIndicator.style.setProperty('background', '#f00')
     const stayWorking = e => onlineIndicator.style.setProperty('background', 'yellow')  //Não sei amarelo em hex  
@@ -146,11 +138,8 @@ const Msg = (e => {
     }
 })()
 
-
 //Depois precisamos de funções
 //para tratar as respostas do server
-
-
 const miniUtils = {
 
     //Converte uma lista de comentarios do formato que o servidor usa
@@ -188,7 +177,6 @@ const miniUtils = {
     }
 }
 
-//Agroa sim
 //Todo o código para lidar com a conexão com o servidor está aqui.
 
 let Integration = { loaded: false };
@@ -201,23 +189,20 @@ const tryToLoad = async _ => {
 
     Msg.stayWorking()
 
-
     async function handleNetworkError(reason) {
         Msg.stayOffline()
         sucess = false
         const reload = await Msg.showErrorMessage(reason + ' Reload the page? ', 'Yes', 'No')
         if (reload) {
             //Não sei se isto fere o requisito de a aplicação ter que ter
-            //Uma só pagina.
+            //uma só pagina.
             //Só não me sinto nem um pouco bem fazendo isto.
             location.reload(true)
         } else {
-            //Se te deixa mais feliz nós iremos tentar fazer isto denovo após 10 segundos.
-            //E eu acho que isto me dá um ponto no quesito tratamento de erros.
+            //Se te deixa mais feliz nós iremos tentar reconectar denovo após 10 segundos.
             setTimeout(tryToLoad, 10000)
         }
     }
-
 
     //Primeiro passo, pegar o Nosso Usuario.
     const user = fetch("https://tagchatter.herokuapp.com/me").then(async m => {
@@ -242,18 +227,16 @@ const tryToLoad = async _ => {
         const channelsToRegister = await c.json()
         Channels.registerChannelList(channelsToRegister)
     }).catch(async e => {
-        console.error(e)
-
         //Eu sei que tratamento de erros é um requisito do projeto
         //Até agora erros só aconteceram com net::ERR_CONECTION_RESET,
-        // net::ERR_CONECTION_FALIED e net::ERR_NAME_NOT_RESOLVED
+        //net::ERR_CONECTION_FALIED e net::ERR_NAME_NOT_RESOLVED
         //E não sei se há muito que podemos fazer nessas condições.
-
+        console.error(e)
         handleNetworkError('Falied to load channel list, no connection with the server so the app cannot work.')
     })
 
     //O bom deste sistema e que os 3 requests são feitos em paralelo,
-    //então um não espera o outro
+    //então um não espera o outro o que acelera o carregamento.
     await Promise.all([user, users, channels])
 
     //Se isto for true, houve umm erro e o usuario decidiu não recarregar
@@ -261,6 +244,7 @@ const tryToLoad = async _ => {
         return
     }
     
+    //Senão, estamos online e podemos continuar.
     Msg.stayOnline()
 
     //Após termos pegado todos os canais ja podemos começar o loop principal de mensagens:
@@ -289,10 +273,14 @@ const tryToLoad = async _ => {
                 if (reload) {
                     location.reload(true)
                 } else {
+                    //Tentaremos reconectar após 3 segundos.
+                    //BUG; neste meio tempo a conexão pode ter 
+                    //sido reestabelecida.
                     setTimeout(tryToLoad, 3000)
                 }
             }
         })
+        
         const comments = miniUtils.convertToMyFormat(channelsData)
         Channels.updateChannels(comments)
 
@@ -305,7 +293,7 @@ const tryToLoad = async _ => {
     setInterval(fetchNewComments, updateInterval * 1000)
 
 
-    //Não tão rapido, o o nosso querido usuario ainda não pode enviar mensagens.
+    //Não tão rapido, o nosso querido usuario ainda não pode enviar mensagens.
     async function sendMessageToChannel(msg = '', channel = '') {
 
         const channelToSend = channel
@@ -331,7 +319,7 @@ const tryToLoad = async _ => {
             case 400:
                 resend = await Msg.showMessageFaliedError(msg, 'Aplication error, contact the developer about this: @ColdMeson_06')
                 if (resend) {
-                    //Por crivel que pareça, suspeito de que há uma possibilidade
+                    //Por incrivel que pareça, suspeito de que há uma possibilidade
                     //de que isto crie um stack overflow.
                     sendMessageToChannel(msg, channel)
                 }
@@ -358,10 +346,14 @@ const tryToLoad = async _ => {
                 }
                 break;
         }
-
+        //Se não tivermos sucesso o usúario talvez tenha
+        //optado por ficar na pagina para ler seus comentários
+        //ou resolveu recarregar a pagina.
+        //Enão não há muito o que se fazer aqui.
         if (!sucess) {
             return
         }
+        
         const jsonResponse = await serverResponse.json()
         const result = miniUtils.convertToMyFormat({ [channelToSend]: [jsonResponse] })
         result.sucess = sucess
@@ -376,5 +368,8 @@ const tryToLoad = async _ => {
     //Este modulo é assicrônio (acho que é assim em português). 
 }
 
+//Tente carregar o módulo e deixar o objeto ˋIntegratioˋ com os metodos públicos.
 tryToLoad().then(r => Integration = r).catch(e => console.log('Falied to initialize the integration module.'))
 
+//Por mais que tenha o .catch ele serve apenas para informar.
+//Já que será carregado novamente em 10 segundos caso haja erros.
