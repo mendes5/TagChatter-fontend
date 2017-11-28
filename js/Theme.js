@@ -86,9 +86,12 @@ const Themes = (_ => {
         css[':root'] = themeLib[i]
     }
 
+    //Se quiser um novo tema é só copiar a linha de baixo.
     DOMRenderer.renderTemplate(colorTemplate, { C1: 'rgb(42, 45, 52)', C2: '#333', C3: '#ddd', THEME_ID: 0 })
     DOMRenderer.renderTemplate(colorTemplate, { C1: 'rgba(146, 147, 150, 1)', C2: 'rgb(37, 39, 46)', C3: 'rgb(37, 39, 146)', THEME_ID: 1 })
     DOMRenderer.renderTemplate(colorTemplate, { C1: '#009', C2: '#005', C3: '#004', THEME_ID: 2 })
-
+    //Isto não vai para a API publica já que ninguem
+    //teria paciencia para criar todoas as cores que precizam.
+    
     return { changeThemeTo }
 })()
