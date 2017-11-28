@@ -19,8 +19,8 @@ DOMRenderer.registerTemplate('chatItem')
     </p>
 </div>`
 
-//O objetivo deste modulo é centralizar todas as funções relacionadas a canais.
-
+//O objetivo deste modulo é centralizar todas as funções relacionadas a 
+//canais e comentarios de canais.
 const Channels = (_ => {
 
     //Teplates nesessarios:
@@ -31,42 +31,46 @@ const Channels = (_ => {
     //e tem funções para distribuir mensagens entre os canais quando
     //chegarem.
     const ChannelStateManager = {
-
+        
+        //Guarda todos os objetos ˋChannelˋ.
         channels: {},
 
+        //É necessário para deixar o nome do canal selecionado
+        //com uma fonte diferente.
         $selectedChannelLabel: undefined,
+        
+        //Guarda mensagens que falharam enviar.
         queue: {
+            
             lenght: 0,
-            itens: {},  //{java:[{msg},{msg}], go:[{msg}]}
+            itens: {},
+            
+            //Adiciona um comentario do usúario que ainda não
+            //está registrado.
             add(chan = '', str = '') {
                 this.itens[chan] = str
                 this.lenght += 1
             },
+            
+            ///reconstroi as mensagens na queue para que agora tenham 
+            //os dados do usuario que agora está registrado        
             drain() {
-
-                //Isto reconstroi as mensagens na queue para que agora tenham 
-                //os dados do usuario que agora está registrado
                 Object.keys(this.itens).map(key => {
                     this.itens[key].forEach((v, i) => {
                         this.itens[key][i].userProfilePic = Users.me.avatar
                         this.itens[key][i].senderName = Users.me.name
                     })
                 })
-
-
                 if (this.length) {
-                    if (!TESTING_ENABLED) {
-
-
-
-                    } else {
-                        ChannelStateManager.updateChannels(this.itens)  //Agora podemos enviar como se fossem mensagens normais
-                        this.itens = {}
-                        this.length = 0
-                    }
+                    ChannelStateManager.updateChannels(this.itens)  //Agora podemos enviar como se fossem mensagens normais
+                    this.itens = {}
+                    this.length = 0
                 }
             },
         },
+        
+        //O Pannel em que a lista de canais aparece.
+        //Dentro de um ˋFixedRendererTargetˋ.
         renderer: new DOMRenderer.FixedRendererTarget('#channelsMenu'),
 
         $currentOpen: N$('initial'),
@@ -82,15 +86,16 @@ const Channels = (_ => {
             const channel = new Channel(chan)
             this.channels[chan.name] = channel
             document.body.appendChild(channel.getView())
-
             return channel
         },
 
+        //Registra vários novos canais.
         registerChannelList(list = []) {
             list.map(c => this.registerChannel(c))
         },
 
-        //Escreve as mensagens nos canais certos.
+        //Ordena que os canais registrados escrevam suas
+        //mensagens e atualizem seus contadores.
         updateChannels(newData = {}) {
             const channelNames = Object.keys(newData)
             for (let i = 0; i < channelNames.length; i++) {
@@ -104,6 +109,11 @@ const Channels = (_ => {
         },
 
         //Faz com que as conversas de um canal aparecam na tela.
+        //Esconde o ultimo canal aberto.
+        
+        //OBS; ˋHTMLElement.removeChildAt()ˋ e ˋHTMLElement.appendChild()ˋ
+        //faziam o main thread congelar por 5 segundos com mais de 1000 
+        //mensagens em cada pagina. Trocar a opacidade ajuda a resolver isto.
         openChannel(str) {
             this.$channelNameDisplay.innerText = '#' + str
             const chatView = this.channels[str].getView()
@@ -115,9 +125,9 @@ const Channels = (_ => {
             this.$currentOpen = chatView
             this.$currentOpen.style.setProperty('opacity', 1)
             this.$currentOpen.style.setProperty('z-index', 999999)//Isto parece errado
-
         },
 
+        //Para nãõ deixar o objeto ˋthis.channelsˋ público.
         getChannel(name = "") {
             return this.channels[name]
         },
@@ -133,37 +143,39 @@ const Channels = (_ => {
                 return this.$channelNameDisplay.innerText
             }
         },
+        
+        //WARN; Este método também pega seus dados de fontes não confiaves,
+        //como ele funciona vou deixar como warn.
         theOpenChannelIsValid() {
             return !(this.getOpenChannelName() === "Select an channel to begin...")
         },
+        
         //Envia uma mensagem para um canal especifico
         async dispatchMessageToChannel(str, channel) {
             if (!TESTING_ENABLED) {
                 //Caso o request falhe o propio modulo `Integration`
-                //irá perguntar ao usuario se ele deseja reenviar
+                //irá perguntar ao usúario se ele deseja reenviar
                 const myComment = Integration.sendMessageToChannel(str, this.getOpenChannelId() )
                 if(myComment.sucess){
                     this.updateChannels(myComment)
                 }
             } else {
-                this.updateChannels({
-                    [channel]: [
-                        {
-                            userProfilePic: Users.me.avatar,
-                            senderName: Users.me.name,
-                            date: u.getTime(),
-                            msgBody: str,
-                        }
-                    ]
-                })
+                //TODO; falhar com 25 por cento de probabilidade
+                this.updateChannels({[channel]: [{
+                    userProfilePic: Users.me.avatar,
+                    senderName: Users.me.name,
+                    date: u.getTime(),
+                    msgBody: str,
+                }]})
             }
         },
-
+        
         //Envia uma nova mensagem para o canal aberto.
-        //Adiciona itens a uma queue se o user não estiver registrado ou o modulo de 
+        //Adiciona itens a uma queue se o usúario não estiver registrado ou o modulo de 
         //Integração não foi carregado completamente. 
-        //A minha ideia é guardar todas as mensagens que o usuario tentou enviar em
-        //uma fila e então drena-la atualizando os objetos
+        
+        //OBS; A minha ideia é guardar todas as mensagens que o usuario tentou enviar em
+        //uma fila e então drena-lá atualizando os objetos.
         dispatchMessage(str) {
             const currentChannel = this.getOpenChannelName()
             if (!Users.currentUserIsRegistered || !Integration.loaded) {
@@ -179,31 +191,36 @@ const Channels = (_ => {
             this.dispatchMessageToChannel(str, currentChannel)
             return true
         },
-
+        
+        //Para não deixar a queue pública.
         drainQueue() {
             this.queue.drain()
         },
-
+        
+        //Retorna uma lista com os ids dos canais.
         getAllChannelsIds() {
             return Object.values(Channels.channels).map(e => e.id)
         },
 
+        //Retorna um canal com um id especifico.
         getChannelByID(id) {
             const channels = Object.values(this.channels)
             return channels.filter(e => e.id === id)[0]
         },
+        
+        //Retorna o id do canal aberto.
         getOpenChannelId(){
             return this.channels[this.getOpenChannelName()].id
         }
-        
     }
 
     //Quando se instancia um canal, ele já vem com uma div de
     //chat, um contador de novas mensagens e um `FixedRendererTarget`
     //para escrever as mensagens.
     class Channel {
+        
+        //O objeto chan passado ao contrutor é o que vem da REST API.
         constructor(chan = {}) {
-
             ChannelStateManager.renderer.renderTemplate(channelTemplate, { CHANNEL_NAME: chan.name })
             this.id = chan.id
             this.name = chan.name
@@ -214,7 +231,7 @@ const Channels = (_ => {
             this.renderer = new DOMRenderer.FixedRendererTarget(this.$chatArea)
         }
 
-        //Cria uma div, a que sera usada pelo `FixedRendererTarget`.
+        //Cria uma div, a que será usada pelo `FixedRendererTarget`.
         static createChatArea(id = "") {
             const cdiv = document.createElement('div')
             cdiv.className = "chatArea"
@@ -224,28 +241,28 @@ const Channels = (_ => {
 
         //Escreve o HTML apartir de uma lista de mensagens.
         processData(newData = []) {
-            newData.map(d => {
+            newData.map(d => 
                 this.renderer.renderTemplate(chatTemplate, {
                     _IMAGE_LOCATION: d.userProfilePic,
                     _USER_NAME: d.senderName,
                     _POST_TIME: d.date,
                     _MESSAGE_BODY: d.msgBody,
                 })
-            })
-
+            )
             if (!(ChannelStateManager.$currentOpen.id === this.renderer.renderTarget.id)) {
                 this.$newMessagesLabel.innerText = '+' + (this.newMessagesCount += newData.length);
             }
         }
 
-        //Retorna o elemento HTML de ondeas mensagens estão
+        //Retorna o elemento HTML de onde as mensagens estão
         //sendo escritas.
         getView() {
             this.$newMessagesLabel.innerText = this.newMessagesCount = 0;
             return this.renderer.renderTarget
         }
     }
-
+    
+    //Metodos públicos.
     return {
         openChannel,
         updateChannels,
