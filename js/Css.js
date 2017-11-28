@@ -1,5 +1,5 @@
 
-//Um modulo simples para lidar com css de elementos facilmente.
+//Um módulo simples para lidar com css de elementos facilmente.
 //Documentação no final do arquivo.
 
 const css = new Proxy({}, {
