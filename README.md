@@ -1,10 +1,10 @@
 # Implementação do Front-end TagChatter
 
-Apenas tenha certeza de estar em um navegador moderno com suporte a javascript ES6 e ir no link:
+Apenas tenha certeza de estar em um navegador webkit moderno com suporte a javascript ES6 e ir no link:
 
 https://cold-meson-06.github.io/TagChatter
 
-E é só isso... brincadeira né, você tambem tem que..., não é só isso mesmo.
+E é só isso...
 
 Caso não funcione pode ser que o servidor tenha fechado, então você pode clonar o repositorio, e se tiver Node.js hospedar um servidor http na pasta do repositorio clonado, e abrir na localhost:
 
