@@ -23,7 +23,7 @@ const Msg = (e => {
     .popup{
         border: 2px solid #ff8787;
         position: absolute;
-        transform: translate(-50%, -800%);
+        transform: translate(-50%, -8000%);
         left: 50%;
         top: 50%;
         z-index: 999999999999999999999999;  /*O CSS deveria ter um sistema de camadas*/
