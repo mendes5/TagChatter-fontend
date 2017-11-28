@@ -1,5 +1,8 @@
 //Funções de utilidade que acumulei durante este ano.
 
+//TODO; Mover Css.js e DOMRenderer.js para cá.
+//Além do codigo para gerar as caixas de erro em Integration.js
+
 //Essas são globais mesmo
 const N$ = str => document.getElementById(str);
 const sin = Math.sin
