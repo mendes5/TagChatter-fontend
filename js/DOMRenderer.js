@@ -1,5 +1,5 @@
 
-//Um modulo simples para geração dinamica de elementos HTML
+//Um módulo simples para geração dinâmica de elementos HTML
 //apartir de strings. (este modulo vai acabar se fundindo 
 //com o utils.js)
 
@@ -83,7 +83,7 @@ const DOMRenderer = (_ => {
         return element
     }
 
-    //A mesma coisa, porem com suporte para templates
+    //A mesma coisa, porém com suporte para templates
     function renderTemplateToElement(str = "", map = {}, element) {
         const htmlString = processTemplateAndMap(str, map)
         const renderedElement = renderString(str)
@@ -109,23 +109,27 @@ const DOMRenderer = (_ => {
             this.elementFindFalied = this.renderTarget === null
             return this.elementFindFalied
         }
+        
         //Transforma uma string em HTML e adiciona ao `renderTarget`.
         render(str = "<p>empty<p>") {
             const element = renderString(str)
             return this.appendToTarget(element)
         }
+        
         //O nosso target nunca será `undefined` então não dá pra reutilizar
         //a função na linha 19.
         appendToTarget(element) {
             return this.renderTarget != null ? this.renderTarget.appendChild(element) : false
         }
+        
         //Transforma um template com placeholders em HTML e
         // adiciona ao `renderTarget`.
         renderTemplate(str, map) {
             const htmlString = processTemplateAndMap(str, map)
             return this.render(htmlString)
         }
-        //Caso seja necessario.
+        
+        //Caso seja necessário.
         changeRenderTarget(element = "") {
             if (element instanceof HTMLElement) {
                 this.renderTarget = element;
@@ -135,10 +139,9 @@ const DOMRenderer = (_ => {
         }
     }
 
+    //Apenas por organização.
     const templates = {}
-
     const registerTemplate = (name = "") => str => templates[name] = str[0]
-
     const getTemplate = (name = "") => templates[name]
 
     //Caso você queira um render target rapido
