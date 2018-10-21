@@ -2,7 +2,7 @@
 
 ![Preview](preview.png)
 
-Setup:
+#### Setup:
 ```
 git clone https://github.com/fernando-msj/TagChatter-fontend.git
 cd TagChatter-fontend
@@ -25,7 +25,7 @@ Now you can open like 3 more tabs and... you know, talk to yourself...
 * Works in multiple tabs.
 * It actually scrolls downs when receiving new messages.
 * **It sends the message when you press enter!**
-* And don't send if you press enter+shif (but won't add an line break-either...).
+* And don't send if you press enter+shift (but won't add an line break-either...).
 
 #### Main differences
 * The parrot count and messages are in an single endpoint.
