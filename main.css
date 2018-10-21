@@ -1,0 +1,174 @@
+body{
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+#app {
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+#sidebar{
+  width: 80px;
+  flex-shrink: 0;
+  background-color: #25272E;
+}
+#content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#border{
+  width: 100%;
+  border-top: 1px solid #1D2028;
+  border-bottom: 1px solid #31343C;
+}
+#header{
+  width: 100%;
+  display: flex;
+  height: 80px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #EEEEEE;
+  background-color: #FFF;
+  align-items: center;
+}
+#controlls{
+  align-items: center;
+  flex-shrink: 0;
+  height: 100px;
+  width: 100%;
+  background-color: #EFEFEF;
+  display: flex;
+}
+#chat{
+  height: 100%;
+  background-color: #FFF;
+  overflow-y: auto;
+  justify-content: center;
+  display: flex;
+}
+#center{
+  width: 700px;
+}
+#logo{
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+#profile-pick{
+  width: 52px;
+  height: 52px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin: 0 24px;
+}
+#form{
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 52px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  padding: 0 15px;
+  font-family: Lato;
+  font-size: 14px;
+  color: #393939;
+}
+#send-button{
+  flex-shrink: 0;
+  margin: 0 24px;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 200ms;
+  transform: scale(1);
+}
+#send-button:hover{
+  transform: scale(1.1);
+}
+#channel-name{
+  font-family: IBM Plex Sans;
+  margin: 0;
+  font-size: 36px;
+  color: #626262;
+  flex-shrink: 0;
+  margin-left: 22px;
+}
+#ghost{
+  width: 100%;
+}
+#parrot-container{
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 22px;
+}
+#parrot{
+  margin-right: 10px;
+}
+#parrot-counter{
+  font-family: IBM Plex Sans;
+  font-size: 36px;
+  color: #626262;
+}
+.chat-item {
+  width: 100%;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 16px;
+}
+.avatar-container {
+  width: 58px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+.avatar{
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+}
+.metadata {
+  margin-top: 10px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.user-name{
+  font-family: IBM Plex Sans;
+  line-height: 15px;
+  font-size: 15px;
+  color: #494949;
+}
+.send-time{
+  font-family: Lato;
+  line-height: 12px;
+  font-size: 12px;
+  color: #D1D1D1;
+}
+.message-text{
+  font-family: IBM Plex Sans;
+  line-height: 21px;
+  font-size: 14px;
+  color: #494949;
+}
+.bullet{
+  width: 5px;
+  height: 5px;
+  background: #E5E5E5;
+  margin: 0 7px;
+  border-radius: 100%;
+}
+.message-parrot{
+  margin-left: 7px;
+  cursor: pointer;
+}
+.has-parrot {
+  background-color: #FFFAE7;;
+}
