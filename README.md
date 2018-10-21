@@ -7,8 +7,9 @@ Setup:
 git clone https://github.com/fernando-msj/TagChatter-fontend.git
 cd TagChatter-fontend
 npm install
-npm start
 index.html
+npm start
+echo done
 ```
 
 * Set your user name
