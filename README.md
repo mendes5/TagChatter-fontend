@@ -2,7 +2,9 @@
 
 ![Preview](preview.png)
 
-#### Setup Ubuntu/MacOS:
+#### Setup instructions
+<details>
+<summary>MacOS</summary>
 ```
 git clone https://github.com/fernando-msj/TagChatter-fontend.git
 cd TagChatter-fontend
@@ -11,9 +13,21 @@ open ./index.html
 npm start
 echo done
 ```
-
-
-#### Setup Windows:
+</details>
+<details>
+<summary>Ubuntu</summary>
+```
+git clone https://github.com/fernando-msj/TagChatter-fontend.git
+cd TagChatter-fontend
+npm install
+gnome-open index.html
+npm start
+echo done
+```
+You will probably need to go open the index.html by hand if this open an text editor...
+</details>
+<details>
+<summary>Windows</summary>
 ```
 git clone https://github.com/fernando-msj/TagChatter-fontend.git
 cd TagChatter-fontend
@@ -22,6 +36,7 @@ index.html
 npm start
 echo done
 ```
+</details>
 
 * Set your user name
 * Set your avatar url (like `https://avatars3.githubusercontent.com/u/9648865?s=460&v=4`)
