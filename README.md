@@ -2,7 +2,18 @@
 
 ![Preview](preview.png)
 
-#### Setup:
+#### Setup Ubuntu/MacOS:
+```
+git clone https://github.com/fernando-msj/TagChatter-fontend.git
+cd TagChatter-fontend
+npm install
+open ./index.html
+npm start
+echo done
+```
+
+
+#### Setup Windows:
 ```
 git clone https://github.com/fernando-msj/TagChatter-fontend.git
 cd TagChatter-fontend
