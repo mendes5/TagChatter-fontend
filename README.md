@@ -4,38 +4,38 @@
 
 #### Setup instructions
 <details>
-<summary>MacOS</summary>
-```
-git clone https://github.com/fernando-msj/TagChatter-fontend.git
-cd TagChatter-fontend
-npm install
-open ./index.html
-npm start
-echo done
-```
+  <summary>MacOS</summary>
+
+    git clone https://github.com/fernando-msj/TagChatter-fontend.git
+    cd TagChatter-fontend
+    npm install
+    open ./index.html
+    npm start
+    echo done
+
 </details>
 <details>
 <summary>Ubuntu</summary>
-```
-git clone https://github.com/fernando-msj/TagChatter-fontend.git
-cd TagChatter-fontend
-npm install
-gnome-open index.html
-npm start
-echo done
-```
+
+    git clone https://github.com/fernando-msj/TagChatter-fontend.git
+    cd TagChatter-fontend
+    npm install
+    gnome-open index.html
+    npm start
+    echo done
+
 You will probably need to go open the index.html by hand if this open an text editor...
 </details>
 <details>
 <summary>Windows</summary>
-```
-git clone https://github.com/fernando-msj/TagChatter-fontend.git
-cd TagChatter-fontend
-npm install
-index.html
-npm start
-echo done
-```
+
+    git clone https://github.com/fernando-msj/TagChatter-fontend.git
+    cd TagChatter-fontend
+    npm install
+    index.html
+    npm start
+    echo done
+
 </details>
 ...
 
