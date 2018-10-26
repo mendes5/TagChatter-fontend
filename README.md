@@ -59,7 +59,7 @@ Now you can open like 3 more tabs and... you know, talk to yourself...
 * You need to setup avatar and user name.
 
 #### Current Problems
-* The comment list is re-rendered setting `innerHTML` wich causes an flash (*and performance degradation...*).
-* There is no error handling (the `.catch` wasn't working for some reason...)
+* The comment list is re-rendered setting `innerHTML` wich causes an flash (*and performance degradation...*) (we can *easily* solve this by storing state and diffing with the payload from the server).
+* There is no error handling (the `.catch` wasn't working for some reason...) (needs more debugging).
 * There is no fake people to talk with (TODO: integrate with webservice or package for generating random avatars and comments).
 * All code is in global scope (but this is an toy implementation, so i won't bother to fix it).
