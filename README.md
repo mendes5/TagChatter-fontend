@@ -37,6 +37,7 @@ npm start
 echo done
 ```
 </details>
+...
 
 * Set your user name
 * Set your avatar url (like `https://avatars3.githubusercontent.com/u/9648865?s=460&v=4`)
