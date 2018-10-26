@@ -6,15 +6,15 @@ const me = {
   avatar: null,
   previousMessageIndex: 0,
   messagesSent: [],
-  resetPreviousMessage(){
+  resetPreviousMessage() {
     this.previousMessageIndex = 0;
   },
-  getPreviousMessage(){
-    if(this.previousMessageIndex < this.messagesSent.length)
+  getPreviousMessage() {
+    if (this.previousMessageIndex < this.messagesSent.length)
       return this.messagesSent[this.previousMessageIndex++];
   },
-  getNextMessage(){
-    if(this.previousMessageIndex > 0)
+  getNextMessage() {
+    if (this.previousMessageIndex > 0)
       return this.messagesSent[this.previousMessageIndex--];
   }
 };
@@ -59,9 +59,11 @@ const recursivePrompt = msg => {
 
 const persist = question => {
   let value = localStorage.getItem(question, question);
+
   if (value) {
     return value;
   }
+
   value = recursivePrompt(question);
   localStorage.setItem(question, value);
   return value;
@@ -74,11 +76,9 @@ const profilePicture = $$("#profile-pick");
 const chat = $$("#center");
 const chatContainer = $$("#chat");
 
-const updateScrool = () => {
-  if (chatContainer.scrollTop + 300 + chatContainer.getBoundingClientRect().height > chatContainer.scrollHeight) {
-    chatContainer.scroll({ top: chatContainer.scrollHeight, behavior: 'smooth' });
-  }
-};
+const updateScrool = () =>
+  (chatContainer.scrollTop + 300 + chatContainer.getBoundingClientRect().height > chatContainer.scrollHeight) &&
+  chatContainer.scroll({ top: chatContainer.scrollHeight, behavior: 'smooth' });
 
 const update = async () => {
   const { parrots, messages } = await updateAll();
@@ -90,10 +90,8 @@ const update = async () => {
 const login = async (username, profile) => {
   const userName = username || recursivePrompt('Enter your user name') //persist('Enter your user name');
   const avatarUrl = profile || recursivePrompt('Enter your avatar image url') //persist('Enter your avatar image url');
-  const { avatar, name, id } = await createMe(userName, avatarUrl.length > 10 ? avatarUrl : "https://avatars3.githubusercontent.com/u/9648865?s=460&v=4");
-  me.id = id;
-  me.name = name;
-  me.avatar = avatar;
+  const response = await createMe(userName, avatarUrl.length > 10 ? avatarUrl : "https://avatars3.githubusercontent.com/u/9648865?s=460&v=4");
+  Object.assign(me, response);
   profilePicture.src = avatar;
   await update();
   chatContainer.scroll({ top: chatContainer.scrollHeight });
@@ -132,38 +130,42 @@ const buildMessage = ({ id: message_id, content, has_parrot, created_at, user: {
 </div>
 `;
 
+const formHasFocus = () => document.activeElement.isSameNode(form);
+
 const emitMessage = async () => {
   me.resetPreviousMessage();
   const messageText = form.value;
+
   if (!messageText.trim()) {
     return;
   }
+
   form.value = "";
   await sendMessage(me.id, messageText).catch(console.warn);
   me.messagesSent.unshift(messageText);
   update();
 };
 
-sendButton.onclick = emitMessage;
-
-const formHasFocus = () => document.activeElement.isSameNode(form);
+sendButton.addEventListener('click', emitMessage);
 
 addEventListener('keydown', ({ shiftKey, keyCode }) => {
-  if (keyCode === 13 && !shiftKey) {
+  if (keyCode === 13 && !shiftKey) { //Enter and not shift
     emitMessage();
   }
-  if(keyCode === 38 && formHasFocus()) {
+
+  if (keyCode === 38 && formHasFocus()) { //Up
     const message = me.getPreviousMessage();
-    if(message){
+    if (message) {
       form.value = message;
     }
   }
-  if(keyCode === 40 && formHasFocus()) {
+
+  if (keyCode === 40 && formHasFocus()) { //Down
     const message = me.getNextMessage();
-    if(message){
+    if (message) {
       form.value = message;
     }
   }
 });
 
-login();
+addEventListener('DOMContentLoaded ', login);
